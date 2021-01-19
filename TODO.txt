@@ -1,0 +1,53 @@
+3D:
+Macs ersetzen
+screen texture + tiles
+glow elements tweeking
+
+test:
+bake emissive/ lightmaps
+
+funktionen:
+mouseOver clickobject -> Selection Overlay
+mouse over radar, particles go up
+mobile walker camera too slow
+
+cam rotation calcualte better? travel as long as the path is?
+
+html:
+loading screen for leonardo
+
+Done:
+kamera fahrten zu jedem station beim UI click
+click on products -> open new scene(wie sieht jede produkt scene aus? nur rotation camera oder?)
+selection marker UI for radars
+
+
+//SAFARI
+currently not supporting webgl 2, everything runs on webgl1. FIX GLOW
+exitpointlock not working on safari
+safari opens directly pdf , and leaves main page(correcto to parallel download)
+checkin shoiuld also include is looking at station
+debugger visibility not working on IOS
+REJECT OLD DEVICES
+
+
+//Game Manager
+Load html
+Load Assets
+Create GameObjects
+Edit Geometry
+Add Functionalities
+
+//FINALE AUFGABERN
+. neue Station für New Product CHECK
+. man bleibt "stekcen" wenn man auf new product clickt
+. habe ein bug gefunden wenn man direkt auf dem radaren clickt und dann auf dem overlay geht, aber ich weiss woran das liegt
+. How to Overlay schöner
+. Alle overlays schöner zeigen
+. BESSERE AREA DETECTOR, verschieben von kamera collider
+. alles responsive(r)
+. bessere neue station icons
+
+//nice to have
+. new product glowing cooler
+

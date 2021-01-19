@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Leonardo: Virtual Showroom</title>
+    <!-- Style-->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/loading_style.css">
+    <link rel="stylesheet" href="css/overlay.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <!-- gsap animationnn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.0.2/gsap.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://cdn.babylonjs.com/cannon.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>
+</head>
+
+<script src="//code.tidio.co/cehdwgpgjufxwhpvh2fhqp0jx5iuycjr.js" async></script>
+<body>
+
+
+    <div id="debugger">
+        <p id='debugger-fps'>fps</p>
+        <p id='debugger-text'>Nothing to select</p>
+        <p id='debugger-camera'>Current Camera</p>
+        <p id='debugger-camera-area'>no area</p>
+    </div>
+
+    <!--Software Overlay-->
+    <div id="software-overlay" class="overlay-content close">
+        <a id="x-0" class="material-icons sm-80" style='left: 25px;'>close</a>
+        <div id="software-video-content" class="video-content close">
+            <a id="b-0" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <iframe id="video-software-holder" width="560" height="315" src="https://www.youtube.com/embed/azTPhsu2Kh4"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            <div id="software-video-options" class="weather-btn-group">
+                <a class="material-icons md-60-video" onclick="setSoftwareVideo(0, 0)">looks_one</a>
+                <a class="material-icons md-60-video" onclick="setSoftwareVideo(0, 1)">looks_two</a>
+                <a class="material-icons md-60-video" onclick="setSoftwareVideo(0, 2)">looks_3</a>
+            </div>
+        </div>
+        <div id="software-overlay" class="station-content close">
+            <div class="weather-row-text">
+                <p class="weather-title">Meteorological Software</p>
+                <p class="weather-text">Leonardo’s meteorological software packages are designed to cover a wide range
+                    of tasks to suit different users.
+                    This includes the detection of adverse weather conditions, tracking and probabilistic
+                    short-term-forecasting, and generation and
+                    distribution of national mosaics/composites. Our software allows to process heterogeneous radar
+                    networks (3rd party radars), to
+                    seamlessly integrate other sensor data (lidar, satellite, lightning, etc.), and to utilize dual
+                    polarization information in a
+                    sophisticated manner.</p>
+            </div>
+            <div class="weather-row-imgs">
+                <div class="weather-img-box">
+                    <p class="softwares-title">Rainbow® 5 – Application Software</p>
+                    <img class="main-previews" src="img/preview rainbow.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a id="soft-vid-btn-0" class="material-icons md-60" onclick="">ondemand_video</a>
+                        <a class="material-icons md-60" href="downloadables/Rainbow_17071035107_EN.pdf"
+                            target="_blank">picture_as_pdf</a>
+                    </div>
+
+                </div>
+                <div class="weather-img-box">
+                    <p class="softwares-title">Smart Weather (SmartWx) - Web-based Application Framework</p>
+                    <img class="main-previews" src="img/preview smartweather.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a id="soft-vid-btn-1" class="material-icons md-60" onclick="">ondemand_video</a>
+                    </div>
+                </div>
+                <div class="weather-img-box">
+                    <p class="softwares-title">RainSNIP – Scientific Data Analysis and Display</p>
+                    <img class="main-previews" src="img/preview rainsnip.jpg"></img>
+                    <!-- FAKE-->
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60" style="opacity: 0">picture_as_pdf</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Weather Overlay-->
+    <div class="overlay-content close">
+        <a id="x-1" class="material-icons sm-80" style='left: 25px;'>close</a> 
+        <div class="video-content close">
+            <iframe id="video-radar-holder" width="560" height="315" src="https://www.youtube.com/embed/7QbX8IYmwFU"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        <div class="station-content close">
+            <div class="weather-row-text">
+                <p class="weather-title">State-of-the-art Weather Radar Technology</p>
+                <p class="weather-text">LEONARDO Germany GmbH provides highly accurate weather radars with field-proven
+                    reliability. Our METEOR range of C-Band, S-Band and X-Band weather radars employs breakthrough
+                    technologies from the meteorology, signal processing and engineering sectors, as well as the
+                    semi-conductor and IT industries to deliver the best possible quantitative data. METEOR weather
+                    radars are available with magnetron or klystron transmitters and dual polarization.</p>
+            </div>
+            <div class="weather-row-imgs">
+                <div class="weather-img-box">
+                    <p class="radar-title">C-Band</p>
+                    <img class="main-previews" src="img/101MEC_Mexico_Mozotal_2008_Mag_720x725.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60" onclick="setRadarSelection('C')">3d_rotation</a>
+                        <a class="material-icons md-60" href="downloadables/c_radar_datenblatt.pdf"
+                            target="_blank">picture_as_pdf</a>
+                    </div>
+
+                </div>
+                <div class="weather-img-box">
+                    <p class="radar-title">X-Band</p>
+                    <img class="main-previews" src="img/124DWD_Frankfurt_720x725.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60" onclick="setRadarSelection('X')">3d_rotation</a>
+                        <a class="material-icons md-60" href="downloadables/x_radar_datenblatt.pdf"
+                            target="_blank">picture_as_pdf</a>
+                    </div>
+                </div>
+                <div class="weather-img-box">
+                    <p class="radar-title">S-Band</p>
+                    <img class="main-previews" src="img/169BRS-1_Brazil_Natal_2012_720x725.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60" onclick="setRadarSelection('S')">3d_rotation</a>
+                        <a class="material-icons md-60" href="downloadables/s_radar_datenblatt.pdf"
+                            target="_blank">picture_as_pdf</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Lidar Windshear Overlay-->
+    <div id="lidar-overlay" class="overlay-content close">
+        <a id="x-2" class="material-icons sm-80" style='left: 25px;'>close</a>
+        <div id="lidar-video-content" class="video-content close">
+            <a id="b-2" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <iframe id="video-lidar-holder" width="560" height="315" src="https://www.youtube.com/embed/IDEfZB5TtX0"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        <div id="windshear-0" class="windshear-block close">
+            <a id="b-2-0" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="windshear-row-text">
+                <p class="weather-title">ShearScout</p>
+                <p class="weather-text">ShearScout® Sonic and ShearScout® 3D provide integrated solutions for wind shear
+                    detection and 3D weather monitoring at airports. Focus can be put on the aerodrome itself or include
+                    the glide path and the airport hinterland. Different hard- and software options allow an individual
+                    configuration according to the local meteorological conditions and the available budget. ShearScout®
+                    components like e.g. RainScoutATC are available as stand-alone products or as part of an integrated
+                    ShearScout® solution for wind shear detection.</p>
+
+            </div>
+            <div class="windshear-row-imgs">
+                <img class="lidar-previews" src="img/preview shearscout.jpg">
+            </div>
+        </div>
+        <div id="windshear-1" class="windshear-block close">
+            <a id="b-2-1" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="windshear-row-text">
+                <p class="weather-title">LLWAS</p>
+                <p class="weather-text">Leonardo’s low-level wind shear alert system (LLWAS) product is designed to
+                    enhance the safety,
+                    regularity and efficiency of aviation in changing wind conditions based on ground wind sensors. It
+                    combines the latest
+                    UCAR Phase-3 LLWAS technology and Leonardo system expertise to detect low-level wind shear along the
+                    runway corridor
+                    and issue timely warnings to ATC staff.<br>
+                    RainShear is Leonardo’s display software for LLWAS systems. Integration of wind data from LLWAS with
+                    complementary
+                    wind sensors such as weather radar and lidar provides airports with a complete wind shear alert
+                    solution.<br>
+                    LLWAS is available as a stand-alone product or as part of an integrated solution for wind shear
+                    detection.
+                </p>
+            </div>
+            <div class="windshear-row-imgs">
+                <img class="lidar-previews" src="img/AdobeStock_266779188_Preview_test_Desktop.png">
+            </div>
+        </div>
+
+        <div id="lidar-overlay" class="station-content close">
+            <div class="weather-row-text">
+                <p class="weather-title">Lidar and Windshear Detection</p>
+                <p class="weather-text">Wind shear is a change in wind speed and/or direction over a short distance. In
+                    aviation,
+                    low-level wind shear and microbursts pose a serious threat to aircraft during take-off and landing.
+                    Today,
+                    there are two main types of wind shear alert systems on the market.<br>
+                    The ground-based LLWAS (Low-Level Wind Shear Alert System) use data from anemometers installed
+                    within and around the aerodrome.
+                    The data is processed via a sophisticated LLWAS algorithm to calculate the resulting wind shear and
+                    to derive the alerts.
+                    Different software packages allow convenient control of the LLWAS system and user-friendly display
+                    of wind shear alerts.<br>
+                    Wind shear can also be detected via a weather radar and a scanning Doppler-lidar. When combined,
+                    both sensors make up an
+                    all-weather wind shear detection system. The lidar system provides wind data in no-rain weather
+                    situations while the weather
+                    radar performs best in the presence of rain. Dedicated software packages process data from both
+                    systems, combine wind shear
+                    information and display alerts.</p>
+            </div>
+            <div class="weather-row-imgs">
+                <div class="weather-img-box">
+                    <p class="radar-title">Lidar System SKIRON3D ®</p>
+                    <img class="main-previews" src="img/preview lidar.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60 FAKE" style="opacity: 0">insert_emoticon</a>
+                        <a id="lidar-vid-btn-0" class="material-icons md-60">ondemand_video</a>
+                        <a id="" class="material-icons md-60" href="https://www.skiron3d.com/tour/"
+                            target="_blank">web</a>
+                        <a class="material-icons md-60" href="downloadables/SKIRON3D_09091016114_EN.pdf"
+                            target="_blank">picture_as_pdf</a>
+                        <a class="material-icons md-60 FAKE" style="opacity: 0">insert_emoticon</a>
+                    </div>
+
+                </div>
+                <div class="weather-img-box">
+                    <p class="radar-title">Windshear Detection</p>
+                    <img class="main-previews" src="img/preview windshear.jpg"></img>
+                    <div class="weather-btn-group">
+                        <a class="material-icons md-60 FAKE" style="opacity: 0">insert_emoticon</a>
+                        <a class="material-icons md-60" href="downloadables/ShearScout_17071035111_EN.pdf"
+                            target="_blank">picture_as_pdf</a>
+                        <a id="" class="material-icons md-60" onclick="handleWindshear(0)">picture_in_picture</a>
+                        <a class="material-icons md-60" onclick="handleWindshear(1)">picture_in_picture</a>
+                        <a class="material-icons md-60 FAKE" style="opacity: 0">insert_emoticon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Solutions Overlay-->
+    <div class="overlay-content close">
+        <a id="x-3" class="material-icons sm-80" style='left: 25px;'>close</a>
+        <div id="solutions-overlay" class="station-content close">
+            <div class="solution-row-text">
+                <p class="weather-title">Solutions and Services</p>
+            </div>
+            <div class="solutions-row-imgs">
+                <div class="solution-column">
+                    <div class="solution-img-box">
+                        <img id="solserv-1" class="img-solution"
+                            src="img/solutions/AdobeStock_249818599_hero_desktop.jpg">
+                        <div class="centered">Global Challenges</div>
+                    </div>
+                    <div class="solution-img-box">
+                        <img id="solserv-2" class="img-solution" src="img/solutions/AdobeStock_62935306_Desktop.png">
+                        <div class="centered">Customized Solutions</div>
+                    </div>
+                    <div class="solution-img-box">
+                        <img id="solserv-3" class="img-solution" src="img/solutions/AdobeStock_201574431_Main.jpg">
+                        <div class="centered">Variety of Applications</div>
+                    </div>
+                    <div class="solution-img-box">
+                        <img id="solserv-4" class="img-solution" src="img/solutions/AdobeStock_283861518_Desktop.jpg">
+                        <div class="centered">Beyond Weather</div>
+                    </div>
+
+                </div>
+                <div class="solution-column">
+                    <div class="solution-img-box">
+                        <img id="solserv-5" class="img-solution" src="img/solutions/AdobeStock_291651126_Desktop.png">
+                        <div class="centered">Customized Services</div>
+                    </div>
+                    <div class="solution-img-box">
+                        <img id="solserv-6" class="img-solution" src="img/solutions/DSC_0723_hero_desktop.jpg">
+                        <div class="centered">Customer Service</div>
+                    </div>
+                    <div class="solution-img-box">
+                        <img id="solserv-7" class="img-solution" src="img/solutions/AdobeStock_216521873_Desktop.jpg">
+                        <div class="centered">Customer Service Modules</div>
+                    </div>
+                    <div class="solution-img-box FAKE">
+                        <img class="img-solution" src="img/solutions/AdobeStock_145285951_landscape.jpg">
+                        <div class="centered ">FAKE</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="solution-content-1" class="solution-block close">
+            <a id="b-3-1" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/AdobeStock_249818599_hero_desktop.jpg">
+                <p class="centered-title">Global challenges</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_145285951_landscape.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Over the past decades, weather and climate conditions have
+                        changed
+                        noticeably worldwide.
+                        Meteorological phenomena like hurricanes, tornadoes, hailstorm, lightning, frost, but also
+                        droughts and fires
+                        are appearing more frequently and more violently.</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Meteorological information cannot preclude the impact of
+                        adverse weather
+                        phenomena, but it can
+                        help to timely detect the formation of the phenomena and contribute to mitigate the most serious
+                        effects of weather hazards.
+
+                        <br> <br>Leonardo offers solutions for a variety of different individual user’s needs.</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_169295455_landscape.jpg">
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/meteorology/solutions/meteorology"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-2" class="solution-block close">
+            <a id="b-3-2" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/AdobeStock_62935306_Desktop.png">
+                <p class="centered-title">Customized Solutions</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/169BRS-5_Brazil_Sao-Francisco_01_Landscape.png">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">With a recognized role as technology leader in Weather Radar
+                        Systems and
+                        our expertise in providing turnkey
+                        meteorological sensoring networks, we offer a broad portfolio of leading-edge meteorological
+                        sensors and software solutions to
+                        suit the individual needs of our customers..</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box ">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Meteorological information cannot preclude the impact of
+                        adverse weather
+                        phenomena, but it can
+                        help to timely detect the formation of the phenomena and contribute to mitigate the most serious
+                        effects of weather hazards.
+
+                        <br> <br>Leonardo offers solutions for a variety of different individual user’s needs.</p>
+
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_169295455_landscape.jpg">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/218CAS-5_1700S_Canada_Spirit River (1).jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">We focus on providing customized system and turnkey solutions
+                        to the
+                        benefit of our customers. We help to
+                        find the best solution for the individual scenario.</p>
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/meteorology"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-3" class="solution-block close">
+            <a id="b-3-3" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/AdobeStock_201574431_Main.jpg">
+                <p class="centered-title">Variety of Applications</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_283669922_Landscape.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Meteorology</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Aviation</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_245202688_hero_desktop.jpg">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/Fotolia_62824996_L_Desktop.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Hydrology</p>
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/meteorology/solutions"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-4" class="solution-block close">
+            <a id="b-3-4" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/AdobeStock_283861518_Desktop.jpg">
+                <p class="centered-title">Beyond Weather</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/BILD4505_ret-bead.jpg">
+                </div>
+                <div class="solution-text-box ">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">We offer solutions that go beyond the detection of
+                        hydrometeors in the
+                        atmosphere in specialized areas
+                        such as detection and tracking of volcanic ash.</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Or sandstorm detection.</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_257555288_Desktop.jpg">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/Fotolia_62824996_L_Desktop.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Hydrology</p>
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/meteorology/solutions/beyond-weather"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-5" class="solution-block close">
+            <a id="b-3-5" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/AdobeStock_291651126_Desktop.png">
+                <p class="centered-title">Customized Services</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img style="opacity: 0" class="img-solution-quad" src="img/solutions/AdobeStock_318101694_Landscape.png">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">We provide a broad range of services related to
+                        the installation, operation
+                        and maintenance
+                        of our meteorological products and implementation of our solutions.</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Consultancy</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_318101694_Landscape.png">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad"
+                        src="img/solutions/112CHC-4_Switzerland_Pointe-de-la-Plaine-Morte_04_Landscape.png">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Radar Siting</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Turnkey supply</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/90CAS-3_Caribbean_Guyana_Main.png">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_213594025_Landscape.png">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Training</p>
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/meteorology/services"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-6" class="solution-block close">
+            <a id="b-3-6" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/DSC_0723_hero_desktop.jpg">
+                <p class="centered-title">Customer Service</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/IMG-20190331-WA0007_Landscape.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">We ensure the highest value possible for our products and
+                        systems and the best assistance through an extended portfolio of engineering and
+                        technical services. Our Customer Service, through an integrated team of engineers
+                        and technicians of different areas, is available to timely and effectively respond
+                        to the queries of our customers.</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Our experienced service engineers and product specialists provide
+                        expert technical assistance via remote communication media or onsite, offering helpdesk
+                        support, repair services, preventive maintenance, spare-part management and on-demand support.
+                    </p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_82329911_Landscape.jpg">
+                </div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/customer-service"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+        <div id="solution-content-7" class="solution-block close">
+            <a id="b-3-7" class="material-icons sm-80" style='right: 25px;'>undo</a>
+            <div class="solution-title">
+                <img class="img-solution-quad title" src="img/solutions/DSC_0723_hero_desktop.jpg">
+                <p class="centered-title">Customer Service Modules</p>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/AdobeStock_274322076_hero_desktop.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Help Desk Module</p>
+                </div>
+            </div>
+            <div class="img-text-block mobile-flip">
+                <div class="solution-text-box">
+                    <div class="line-around-text content-left"></div>
+                    <p class="solution-text content-left">Spare Parts Module</p>
+                </div>
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/IMG_1349_ret-bead_main.jpg">
+                </div>
+            </div>
+            <div class="img-text-block">
+                <div class="solution-img-quad">
+                    <img class="img-solution-quad" src="img/solutions/IMG_20190917_1308052_hero_desktop.jpg">
+                </div>
+                <div class="solution-text-box">
+                    <div class="line-around-text content-right"></div>
+                    <p class="solution-text content-right">Corrective Maintenance Module</p>
+                </div>
+            </div>
+            <div style="margin-top: 30px;" class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <a class="material-icons md-60" href="downloadables/Downloads_Flyer/Help Desk Module_220916541-CS.pdf"
+                    target="_blank">picture_as_pdf</a>
+                <a class="material-icons md-60"
+                    href="downloadables/Downloads_Flyer/Spare Part Pool Module_220916542-CS.pdf"
+                    target="_blank">picture_as_pdf</a>
+                <a class="material-icons md-60"
+                    href="downloadables/Downloads_Flyer/Preventive Maintenance Module_230917083-CS.pdf"
+                    target="_blank">picture_as_pdf</a>
+                <a class="material-icons md-60"
+                    href="downloadables/Downloads_Flyer/Corrective Maintenance Module_220916544-CS.pdf"
+                    target="_blank">picture_as_pdf</a>
+                    <div class="line-around-text content-left line-icon"></div>
+            </div>
+            <div class="icon-block">
+                <div class="line-around-text content-left line-icon"></div>
+                <p class="read-more">READ MORE</p>
+                <a class="material-icons md-60 arrow"
+                    href="https://www.leonardogermany.com/en/customer-service/meteorology"
+                    target="_blank">arrow_right_alt</a>
+            </div>
+        </div>
+    </div>
+
+    <!--Contact Overlay-->
+    <div id="contact-overlay" class="overlay-content close">
+        <a id="x-4" class="material-icons sm-80" style='left: 25px;'>close</a>
+        <div id="contact-overlay" class="station-content close">
+            <div class="weather-row-text no-overflow">
+                <p class="weather-title">Contact & Meet</p>
+                <p>Please feel free to leave a comment or request:</p>
+                <a class="weather-text"
+                    href="mailto:exhibitionguests@leonardogermany.com">exhibitionguests@leonardogermany.com</a> <br>
+                <br>
+                <p>For general information or product related inquiries, you may also address:</p>
+                <a class="weather-text" href="mailto:info@leonardogermany.com">info@leonardogermany.com</a> <br> <br>
+                <p>For more detailed information on our Customer Service, please address:</p>
+                <a class="weather-text" href="mailto:service@leonardogermany.com">service@leonardogermany.com</a>
+            </div>
+
+        </div>
+    </div>
+
+    <!--How To Overlay-->
+    <div id="howto-overlay" class="overlay-content close">
+        <a id="x-5" class="material-icons sm-80" style='left: 25px;'>close</a>
+        <div class="station-content close">
+            <div class="weather-row-text no-overflow">
+                <p class="weather-title">How to interact</p>
+            </div>
+            <img src="assets/Anleitung Leonardo.png">
+        </div>
+    </div>
+
+    <!--Overlay Buttons-->
+    <div class="overlay-weather-btns">
+        <div class="main-menus">
+            <span id="to-overlay" class="material-icons md-60 weather-icon noselect">school</span>
+        </div>
+        <div class="view-3d-btn close">
+            <a id="x-1-r" class="material-icons sm-80" style='left: 25px;'>close</a>
+            <a id="video-btn" class="material-icons md-60">ondemand_video</a>
+            <a id="pdf-radar-btn" class="material-icons md-60" onclick="openRadarPdf()">picture_as_pdf</a>
+        </div>
+    </div>
+
+
+    <!--FINISH LOADING ANIMATION-->
+    <!--UI FINAL-->
+    <div class="UI" style="top: 10px;right: 10px;">
+        <div class="UI-Holder">
+            <div class="boxUIText">
+                <p id="go-5" class="menu-text">Counter</p>
+                <div class="dot"></div>
+            </div>
+            <div class="boxUIText">
+                <p id="go-6" class="menu-text">New Product</p>
+                <div class="dot"></div>
+            </div>
+            <div class="boxUIText">
+                <p id="go-0" class="menu-text">Meteorological Software</p>
+                <div class="dot"></div>
+            </div>
+            <div class="boxUIText">
+                <p id="go-1" class="menu-text">Weather Radars</p>
+                <div class="dot"></div>
+            </div>
+            <!-- RADARS OPTIONS -->
+            <div class="boxUIText hidden-box sub3">
+                <p id="ra-C" class="menu-text sub">C-Band</p>
+                <div class="dot dot-sub"></div>
+            </div>
+            <div class="boxUIText hidden-box sub3">
+                <p id="ra-X" class="menu-text sub">X-Band</p>
+                <div class="dot dot-sub"></div>
+            </div>
+            <div class="boxUIText hidden-box sub3">
+                <p id="ra-S" class="menu-text sub">S-Band</p>
+                <div class="dot dot-sub"></div>
+            </div>
+            <div class="boxUIText">
+                <p id="go-2" class="menu-text">Lidar & Windshear Detection</p>
+                <div class="dot"></div>
+            </div>
+            <div class="boxUIText">
+                <p id="go-3" class="menu-text">Solutions & Services</p>
+                <div class="dot"></div>
+            </div>
+            <!-- PDF OPTIONS -->
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_1.pdf" target="_blank">
+                <p id="sol-1" class="menu-text sub">Pdf 1</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_2.pdf" target="_blank">
+                <p id="sol-2" class="menu-text sub">Pdf 2</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_3.pdf" target="_blank">
+                <p id="sol-3" class="menu-text sub">Pdf 3</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_4.pdf" target="_blank">
+                <p id="sol-4" class="menu-text sub">Pdf 4</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_5.pdf" target="_blank">
+                <p id="sol-5" class="menu-text sub">Pdf 5</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_6.pdf" target="_blank">
+                <p id="sol-6" class="menu-text sub">Pdf 6</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <a class="boxUIText sub1 sub hidden-box" href="downloadables/doc_7.pdf" target="_blank">
+                <p id="sol-7" class="menu-text sub">Pdf 7</p>
+                <div class="dot dot-sub"></div>
+            </a>
+            <div class="boxUIText">
+                <p id="go-4" class="menu-text">Contact & Meet</p>
+                <div class="dot"></div>
+            </div>
+            <div class="boxUIText-fake">
+            </div>
+        </div>
+    </div>
+
+    <div class="UI footer-column" style="bottom: 0px;left: 0px;">
+        <div class="impressumArea noselect close">
+            <p class="text-impressum">
+                LEONARDO Germany GmbH <br>
+                Raiffeisenstraße 10 <br>
+                41470 Neuss <br>
+                Germany <br>
+                Telefon +49 (0) 2137 782-0 <br>
+                Telefax +49 (0) 2137 782-11 <br>
+                info@leonardogermany.com <br>
+                <br>
+
+                Vertretungsberechtigter Geschäftsführer: <br>
+                Fernando De Maria <br>
+                Registergericht: <br>
+                Amtsgericht Neuss, HRB 17453 <br>
+                Umsatzsteuer-Identifikationsnummer:<br>
+                DE221370499 <br>
+                <br>
+
+                Verantwortlich für den Inhalt: <br>
+                Petra Bartasonok, Marketing Manager<br>
+
+            </p>
+        </div>
+        <div class="FooterHolder">
+            <div class="boxFooter">
+                <p id="impressum-btn" class="textFooter">Impressum</p>
+            </div>
+            <div class="boxFooter">
+                <a class="material-icons md-60 arrow"
+                href="https://www.recordbay.de/datenschutz"
+                target="_blank">
+                <p  class="textFooter">Datenschutz</p>
+            </a>
+            </div>
+        </div>
+
+    </div>
+    <canvas id="renderCanvas" touch-action="none"></canvas>
+
+    <!--LOADING ANIMATION-->
+    <!--div class="ref-align">
+        <img src="assets/ref dots.png">
+    </div-->
+    <div id="customLoadingScreenDiv">
+        <div class="container loading-balls">
+            <img class="leo-logo" src="assets/leo loading.png">
+        </div>
+        <div class="container loading ">
+            <div class="loading">
+                <div class="loading__letter text-loading">L</div>
+                <div class="loading__letter text-loading">o</div>
+                <div class="loading__letter text-loading">a</div>
+                <div class="loading__letter text-loading">d</div>
+                <div class="loading__letter text-loading">i</div>
+                <div class="loading__letter text-loading">n</div>
+                <div class="loading__letter text-loading">g</div>
+                <div class="loading__letter text-loading">.</div>
+                <div class="loading__letter text-loading">.</div>
+                <div class="loading__letter text-loading">.</div>
+            </div>
+        </div>
+        <div class="container progress">
+            <div class="text-progress">0%</div>
+        </div>
+        <div class="container progress">
+            <p class="text-note"><strong>Note:</strong> The virtual stand may only be browsed using Chrome, Edge,
+                Firefox or Safari</p>
+        </div>
+
+    </div>
+
+    <!-- Pdfs Downloads-->
+    <a id="download-1" href="downloadables/doc_1.pdf" download="file1"></a>
+    <a id="download-2" href="downloadables/doc_2.pdf" download="file2"></a>
+    <a id="download-3" href="downloadables/doc_3.pdf" download="file3"></a>
+    <a id="download-4" href="downloadables/doc_4.pdf" download="file4"></a>
+    <a id="download-5" href="downloadables/doc_5.pdf" download="file5"></a>
+    <a id="download-6" href="downloadables/doc_6.pdf" download="file6"></a>
+    <a id="download-7" href="downloadables/doc_7.pdf" download="file7"></a>
+
+
+    <script type="text/javascript" src='js/HelperFunctions.js'></script>
+    <script type="text/javascript" src='js/MeshLoaderCtrl.js'></script>
+    <script type="text/javascript" src='js/MaterialManager.js'></script>
+    <script type="text/javascript" src='js/CameraCreator.js'></script>
+    <script type="text/javascript" src='js/CameraController.js'></script>
+    <script type="text/javascript" src='js/AnimationManager.js'></script>
+    <script type="text/javascript" src='js/InputController.js'></script>
+    <script type="text/javascript" src='js/index.js'></script>
+
+</body>
+
+</html>
