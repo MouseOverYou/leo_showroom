@@ -55,29 +55,33 @@ function ToWalkerMode() {
         scene.activeCamera = walkerCam;
         walkerCam.minZ = 0.05
 
-        HandleMatsTransparency(MainSceneMats, 1)
-        for (let i = 0; i < Radar_Mats.length; i++) {
-            HandleMatsTransparency(Radar_Mats[i], 1)
-        }
-    
-        //Move Prodcts new middle
-        Weather_C_P.position = RadarPositions[0]
-        Weather_X_P.position = RadarPositions[1]
-        Weather_S_P.position = RadarPositions[2]
-    
         console.log('WALKER MODE')
         document.getElementsByClassName("overlay-weather-btns")[0].classList.add("close")
         document.getElementsByClassName("view-3d-btn")[0].classList.add("close")
+        RepositionRadars()
     }
 
+}
+
+async function RepositionRadars(){
+    Weather_C_P.position = RadarPositions[0]
+    Weather_X_P.position = RadarPositions[1]
+    Weather_S_P.position = RadarPositions[2]
+    await ToggleRadarsTransparency()
+}
+
+async function ToggleRadarsTransparency(){
+    HandleMatsTransparency(MainSceneMats, 1)
+    for (let i = 0; i < Radar_Mats.length; i++) {
+        HandleMatsTransparency(Radar_Mats[i], 1)
+    }
 }
 
 function ToRadarMode(band) {
     let currentBand = scene.getTransformNodeByName("Weather_" + band + "_P")
     travelCamToRadar(currentBand.getAbsolutePosition(), band)
     walkerCam.minZ = 10
-    //Transparency
-    HandleMatsTransparency(MainSceneMats, 0)
+
     //Move Prodcts new middle
     window.setTimeout(() => {
         Weather_C_P.position = currentBand.position
@@ -85,6 +89,8 @@ function ToRadarMode(band) {
         Weather_S_P.position = currentBand.position
     }, 500)
 
+    //Transparency
+    HandleMatsTransparency(MainSceneMats, 0)
     console.log('RADAR MODE')
     document.getElementsByClassName("overlay-weather-btns")[0].classList.remove("close")
     document.getElementsByClassName("view-3d-btn")[0].classList.remove("close")

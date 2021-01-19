@@ -65,10 +65,10 @@ function ShowSelectedRadar(band) {
             HandleMatsTransparency(matGroup, 1)
         }
         else {
+            console.log("dont pass: " + matGroup)
             HandleMatsTransparency(matGroup, 0)
         }
     })
-
 }
 
 let AnimRate = 0

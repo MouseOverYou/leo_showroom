@@ -85,16 +85,17 @@ function UISolutionPressed(index) {
 }
 
 let radar_video = ["https://www.youtube.com/embed/hsPmxislGSQ", "https://www.youtube.com/embed/kz1InmmkZ0s", "https://www.youtube.com/embed/7QbX8IYmwFU"]
-function setRadarSelection(band) {
-    alert("SetRadarSelection")
+function setRadarSelection(b) {
+    band = b
     setRadarSelection_sideEffects()
 
     document.getElementsByClassName("main-menus")[0].classList.add("close")
     if (scene.activeCamera == walkerCam) {
-        ToRadarMode(band)
+        ToRadarMode(b)
     }
-    ShowSelectedRadar(band)
-    let index = BandToIndex(band)
+    //alert("band to set: " + b)
+    ShowSelectedRadar(b)
+    let index = BandToIndex(b)
     document.getElementById("video-radar-holder").src = radar_video[index]
 }
 
@@ -245,7 +246,6 @@ function OverlayUIListener(elem_id) {
 
 
 function MenuUIListener(ev) {
-    alert("Listener")
     let childElem = ev.target.children[0]
     if (childElem.id.startsWith("go-")) {
         if (scene.activeCamera == rotateCam) {

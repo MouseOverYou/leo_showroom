@@ -131,7 +131,7 @@ function LoadAssets(scene, assetsManager) {
     assetsManager.load();
 }
 
-let RadarPositions = []
+const RadarPositions = []
 let DiscoverMeshes = []
 let ClickableObjects = [];
 const AnchorPosition = []
@@ -163,33 +163,36 @@ function AccessModelsForFunctionality() {
         }
         //weather c
         else if (elem.name.startsWith("P_2")) {
-            RadarPositions[0] = new BABYLON.Vector3(elem.getAbsolutePosition().x, 12, elem.getAbsolutePosition().z)
+            
             elem.isVisible = false
             Weather_C_P.position = elem.getAbsolutePosition()
             Weather_C_P.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1)
             Weather_C_P.position.y = 12
             Weather_C_P.rotation.y = 230 * (Math.PI / 180)
             feedWithCollider(Weather_C_P, 200, 75, 100, 0, 25, 0)
+            RadarPositions[0] = new BABYLON.Vector3(Weather_C_P.position.x, 12, Weather_C_P.position.z)
         }
         //weather x
         else if (elem.name.startsWith("P_3")) {
-            RadarPositions[1] = new BABYLON.Vector3(elem.getAbsolutePosition().x, 12, elem.getAbsolutePosition().z)
+            
             elem.isVisible = false
             Weather_X_P.position = elem.getAbsolutePosition()
             Weather_X_P.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1)
             Weather_X_P.position.y = 12
             Weather_X_P.rotation.y = -45 * (Math.PI / 180)
             feedWithCollider(Weather_X_P, 200, 75, 100, 0, 25, 0)
+            RadarPositions[1] = new BABYLON.Vector3(Weather_X_P.position.x, 12, Weather_X_P.position.z)
         }
         //weather s
         else if (elem.name.startsWith("P_4")) {
-            RadarPositions[2] = new BABYLON.Vector3(elem.getAbsolutePosition().x, 12, elem.getAbsolutePosition().z)
+            
             elem.isVisible = false
             Weather_S_P.position = elem.getAbsolutePosition()
             Weather_S_P.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1)
             Weather_S_P.position.y = 12
             Weather_S_P.rotation.y = 230 * (Math.PI / 180)
             feedWithCollider(Weather_S_P, 200, 75, 100, 0, 25, 0)
+            RadarPositions[2] = new BABYLON.Vector3(Weather_S_P.position.x, 12, Weather_S_P.position.z)
         }
 
         // radar discover
