@@ -1,3 +1,7 @@
+Urgent!
+weather radars dissapear
+weather radas sometimes appear upon first loading
+
 3D:
 Macs ersetzen
 screen texture + tiles

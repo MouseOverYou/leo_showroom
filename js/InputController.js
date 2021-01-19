@@ -23,7 +23,7 @@ document.addEventListener("pointerdown", event => {
     console.log(event.target)
     // REveal DEbugger
     if (event.target.id.startsWith("debugger")) {
-        event.target.parentNode.style.opacity = 1;
+        //event.target.parentNode.style.opacity = 1;
     }
     //UI Button Click
     else if (event.target.classList.contains("boxUIText")) {
@@ -84,8 +84,9 @@ function UISolutionPressed(index) {
     document.getElementsByClassName("station-content")[3].classList.add("close")
 }
 
-//  HANDLE OVERLAY UI BTNS 
+let radar_video = ["https://www.youtube.com/embed/hsPmxislGSQ", "https://www.youtube.com/embed/kz1InmmkZ0s", "https://www.youtube.com/embed/7QbX8IYmwFU"]
 function setRadarSelection(band) {
+    alert("SetRadarSelection")
     setRadarSelection_sideEffects()
 
     document.getElementsByClassName("main-menus")[0].classList.add("close")
@@ -93,8 +94,8 @@ function setRadarSelection(band) {
         ToRadarMode(band)
     }
     ShowSelectedRadar(band)
-    //let radarElem = document.getElementById("ra-" + band)
-    //ToggleSubmenuSelection(radarElem)
+    let index = BandToIndex(band)
+    document.getElementById("video-radar-holder").src = radar_video[index]
 }
 
 function setRadarSelection_sideEffects(){
@@ -131,13 +132,9 @@ function closeOverlay_sideEffects(index){
     if(index != 5 && index != 2)
         travelCamToStation(index)
 }
-let radar_video = ["https://www.youtube.com/embed/hsPmxislGSQ", "https://www.youtube.com/embed/kz1InmmkZ0s", "https://www.youtube.com/embed/7QbX8IYmwFU"]
-function setRadarVideo() {
-    let index = BandToIndex(band)
-    document.getElementById("video-radar-holder").src = radar_video[index]
-}
 
-let radar_pdf = ["downloadables/c_radar_datenblatt.pdf", "downloadables/x_radar_datenblatt.pdf", "downloadables/s_radar_datenblatt.pdf"]
+
+let radar_pdf = ["downloadables/METEOR 1700C_13011112103_EN.pdf", "downloadables/x_radar_datenblatt.pdf", "downloadables/s_radar_datenblatt.pdf"]
 function openRadarPdf() {
     let index = BandToIndex(band)
     window.open(radar_pdf[index], "_blank")
@@ -248,6 +245,7 @@ function OverlayUIListener(elem_id) {
 
 
 function MenuUIListener(ev) {
+    alert("Listener")
     let childElem = ev.target.children[0]
     if (childElem.id.startsWith("go-")) {
         if (scene.activeCamera == rotateCam) {
@@ -261,10 +259,10 @@ function MenuUIListener(ev) {
     }
 
     else if (childElem.id.startsWith("ra-")) {
+        //never gets in
         band = childElem.id.charAt(3)
         setRadarSelection(band)
         ToggleSubmenuSelection(childElem)
-        setRadarVideo()
     }
 
 
