@@ -152,7 +152,7 @@ function setSoftwareVideo(i, j) {
     }
 }
 
-let menuStationsDict = {0: "computer", 1: "mediation", 2: "toys", 3: "home_repair_service", 4: "contact_page", 5: "school", 6:"toys"}
+let menuStationsDict = {0: "computer", 1: "mediation", 2: "tour", 3: "home_repair_service", 4: "contact_page", 5: "school", 6:"tour"}
 function showMenuControl(index) {
     document.getElementsByClassName("overlay-weather-btns")[0].classList.remove("close")
     document.getElementsByClassName("main-menus")[0].classList.remove("close")

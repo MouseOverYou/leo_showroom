@@ -80,7 +80,7 @@ function ChangeMaterialProperties() {
         }
         else if(mat.name == "Led New P"){
             mat.albedoColor = redLeo
-            mat.emissiveColor = new BABYLON.Color3.FromHexString("#ff0000")
+            mat.emissiveColor = new BABYLON.Color3.FromHexString("#D10101")
             mat.roughness = 0.25
         }
 
